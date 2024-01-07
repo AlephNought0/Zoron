@@ -23,7 +23,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Zoron
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        centralwidget.h centralwidget.cpp
+        playback.h playback.cpp
+
+
 
     )
 # Define target properties for Android with Qt 6 as:

@@ -1,13 +1,20 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "centralwidget.h"
+#include "playback.h"
 
 #include <QFileDialog>
-#include <QAudioOutput>
-#include <QAudioFormat>
 #include <QMouseEvent>
-#include <QLabel>
+#include <QTimer>
 #include <QDebug>
+
+#include <QGraphicsVideoItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsSimpleTextItem>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QLabel>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,25 +22,55 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui -> setupUi(this);
 
-    connect(ui -> centralwidget, SIGNAL(Move()), this, SLOT(Mouse_movement()));
+    setMouseTracking(true); // Enable mouse tracking for the widget
+
+    // Set up a timer to check mouse position periodically
+    timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::checkMousePosition);
+    timer -> start(10);
 
     player = new QMediaPlayer;
-    video = new QVideoWidget;
     audio = new QAudioOutput;
+    graphics = new QGraphicsView;
+    scene = new QGraphicsScene;
+    video = new QGraphicsVideoItem;
+    subtitles = new QGraphicsSimpleTextItem("Meow");
 
-    //connect(audio, SIGNAL(stateChanged(QAudio::State)), this, SLOT(handleStateChanged(QAudio::State)));
+    graphics -> setScene(scene);
 
-    player -> setVideoOutput(video);
     player -> setAudioOutput(audio);
+    player -> setVideoOutput(video);
 
-    audio -> setVolume(0.1);
+    const QSize screenGeometry = screen()->availableSize();
+    video->setSize(QSizeF(screenGeometry.width() / 1.5, screenGeometry.height() / 1.25));
 
-    setCentralWidget(video);
+    scene -> addItem(video);
+
+    subtitles -> setPos(100, 100);
+    scene -> addItem(subtitles);
+    subtitles -> setZValue(1);
+
+
+
+    setCentralWidget(graphics);
+
+    //connect(graphics, &QGraphicsView::resized, this, &MainWindow::resize);
+
+    audio -> setVolume(0.2);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::checkMousePosition() {
+    QPoint currentPos = QCursor::pos();
+
+    if (currentPos != lastMousePos) {
+        qInfo() << currentPos;
+        lastMousePos = currentPos;
+    }
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -54,6 +91,3 @@ void MainWindow::on_actionOpen_triggered()
     player -> play();
 }
 
-/*void MainWindow::mouseMoveEvent(QMouseEvent* event) {
-    qDebug() << event -> pos();
-}

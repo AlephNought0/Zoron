@@ -2,10 +2,17 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMediaPlayer>
-#include <QVideoWidget>
 #include <QMouseEvent>
+#include <QTimer>
+
+#include <QGraphicsVideoItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsSimpleTextItem>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 #include <QLabel>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,13 +30,19 @@ public:
 
 private slots:
     void on_actionOpen_triggered();
-    void Mouse_movement();
+    void checkMousePosition();
 
 private:
     Ui::MainWindow *ui;
 
     QMediaPlayer* player;
-    QVideoWidget* video;
     QAudioOutput* audio;
+    QGraphicsView* graphics;
+    QGraphicsScene* scene;
+    QGraphicsVideoItem* video;
+    QGraphicsSimpleTextItem* subtitles;
+
+    QPoint lastMousePos;
+    QTimer* timer;
 };
 #endif // MAINWINDOW_H
