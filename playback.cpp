@@ -1,26 +1,61 @@
 #include "playback.h"
 
+#include <QScreen>
+#include <QGraphicsVideoItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsSimpleTextItem>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QLabel>
+#include <QVBoxLayout>
+
+#include <QCoreApplication>
+
+#include <QTimer>
+
 Playback::Playback(QWidget *parent)
     : QWidget{parent}
-{}
+{
+    player = new QMediaPlayer;
+    audio = new QAudioOutput;
+    graphics = new QGraphicsView;
+    scene = new QGraphicsScene;
+    video = new QGraphicsVideoItem;
+    //subtitles = new QGraphicsSimpleTextItem("Meow");
 
-/*void setMedia() {
-    QFileDialog dialog;
-    dialog.setFileMode(QFileDialog::ExistingFiles);
-    dialog.setNameFilter(tr("Video Files (*.mp4 *.mov)"));
-    dialog.setViewMode(QFileDialog::Detail);
+    graphics -> setScene(scene); // Set graphic scene
 
-    if(dialog.exec()) {
-        files = dialog.selectedFiles();
-    }
+    player -> setAudioOutput(audio);
+    player -> setVideoOutput(video);
 
-    emit media(files);
+    //subtitles -> setPos(100, 100);
+    //subtitles -> setZValue(1); // Set subtitles to be above video
 
-    QFileDialog fileDialog(this);
-    fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
-    fileDialog.setWindowTitle(tr("Open Movie"));
-    fileDialog.setDirectory(QStandardPaths::standardLocations(QStandardPaths::MoviesLocation)
-                                .value(0, QDir::homePath()));
-    if (fileDialog.exec() == QDialog::Accepted)
-        load(fileDialog.selectedUrls().constFirst());
-}*/
+    scene -> addItem(video);
+    //scene -> addItem(subtitles);
+
+    audio -> setVolume(0.2);
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout -> addWidget(graphics);
+    setLayout(layout);
+}
+
+void Playback::resizeEvent(QResizeEvent *event) // Resize event so the video has the viewport size
+{
+    QWidget::resizeEvent(event);
+
+    graphics -> fitInView(scene -> sceneRect(), Qt::KeepAspectRatio);
+}
+
+void Playback::mediaPlayback(QStringList &files)
+{
+    player -> setSource(QUrl::fromLocalFile(files[0]));
+
+    player -> play();
+
+    QTimer::singleShot(100, this, [=]() { // Set graphics to fit the view right after the video starts playing
+        graphics -> fitInView(scene -> sceneRect(), Qt::KeepAspectRatio);
+    });
+}

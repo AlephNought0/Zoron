@@ -1,17 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "playback.h"
+
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QTimer>
-
-#include <QGraphicsVideoItem>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsSimpleTextItem>
-#include <QMediaPlayer>
-#include <QAudioOutput>
-#include <QLabel>
 
 
 QT_BEGIN_NAMESPACE
@@ -28,6 +22,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+signals:
+    void mediaFiles(QStringList &files);
+
 private slots:
     void on_actionOpen_triggered();
     void checkMousePosition();
@@ -35,13 +32,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QMediaPlayer* player;
-    QAudioOutput* audio;
-    QGraphicsView* graphics;
-    QGraphicsScene* scene;
-    QGraphicsVideoItem* video;
-    QGraphicsSimpleTextItem* subtitles;
-
+    Playback *playback;
     QPoint lastMousePos;
     QTimer* timer;
 };

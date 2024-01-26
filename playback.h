@@ -2,6 +2,14 @@
 #define PLAYBACK_H
 
 #include <QWidget>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QGraphicsVideoItem>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsSimpleTextItem>
+#include <QVBoxLayout>
+
 
 class Playback : public QWidget
 {
@@ -10,11 +18,20 @@ public:
     explicit Playback(QWidget *parent = nullptr);
 
 public slots:
-    //void setMedia();
-    //void addMedia();
+    void mediaPlayback(QStringList &files);
+    void resizeEvent(QResizeEvent *event);
+
+private:
+    QMediaPlayer* player;
+    QAudioOutput* audio;
+    QGraphicsView* graphics;
+    QGraphicsScene* scene;
+    QGraphicsVideoItem* video;
+    QGraphicsSimpleTextItem* subtitles;
+    QVBoxLayout* layout;
 
 signals:
-    //void media(QStringList files);
+
 };
 
 #endif // PLAYBACK_H
