@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "interface.h"
 
 #include <QFileDialog>
 #include <QMouseEvent>
@@ -19,11 +20,26 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &MainWindow::checkMousePosition);
     timer -> start(10);
 
-    playback = new Playback;
+    playback = new Playback; // Create a playback instance
+    interface = new Interface;
 
-    connect(this, &MainWindow::mediaFiles, playback, &Playback::mediaPlayback);
+    QVBoxLayout *stackedLayout = new QVBoxLayout;
+    stackedLayout->addWidget(playback); // Add the Playback widget to the layout
+    stackedLayout->addWidget(interface); // Add the InterfaceItem widget to the layout
 
-    setCentralWidget(playback);
+    // Create a widget to hold the stacked layout
+    QWidget *stackedWidget = new QWidget;
+    stackedWidget->setLayout(stackedLayout);
+
+    // Set the stacked widget as the central widget
+    setCentralWidget(stackedWidget);
+
+    // Initially, show the Playback widget
+    interface->hide();
+
+    //setCentralWidget(playback);
+
+    connect(this, &MainWindow::mediaFiles, playback, &Playback::mediaPlayback); // Send file location to the playback function
 }
 
 MainWindow::~MainWindow()
@@ -43,7 +59,7 @@ void MainWindow::checkMousePosition()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    QFileDialog dialog;
+    QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::ExistingFiles);
     dialog.setNameFilter(tr("Video Files (*.mp4 *.mov)"));
     dialog.setViewMode(QFileDialog::Detail);

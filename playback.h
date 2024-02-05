@@ -9,7 +9,7 @@
 #include <QGraphicsView>
 #include <QGraphicsSimpleTextItem>
 #include <QVBoxLayout>
-
+#include <QMouseEvent>
 
 class Playback : public QWidget
 {
@@ -20,6 +20,7 @@ public:
 public slots:
     void mediaPlayback(QStringList &files);
     void resizeEvent(QResizeEvent *event);
+    void mousePressEvent(QMouseEvent *event);
 
 private:
     QMediaPlayer* player;

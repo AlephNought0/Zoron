@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "playback.h"
+#include "interface.h"
 
 #include <QMainWindow>
 #include <QMouseEvent>
@@ -35,5 +36,6 @@ private:
     Playback *playback;
     QPoint lastMousePos;
     QTimer* timer;
+    Interface *interface;
 };
 #endif // MAINWINDOW_H

@@ -1,18 +1,17 @@
 #include "playback.h"
 
-#include <QScreen>
+#include <QWidget>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 #include <QGraphicsVideoItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsSimpleTextItem>
-#include <QMediaPlayer>
-#include <QAudioOutput>
-#include <QLabel>
 #include <QVBoxLayout>
+#include <QMouseEvent>
 
-#include <QCoreApplication>
+#include <QGraphicsProxyWidget>
 
-#include <QTimer>
 
 Playback::Playback(QWidget *parent)
     : QWidget{parent}
@@ -23,14 +22,13 @@ Playback::Playback(QWidget *parent)
     scene = new QGraphicsScene;
     video = new QGraphicsVideoItem;
     //subtitles = new QGraphicsSimpleTextItem("Meow");
+    //subtitles -> setPos(100, 100);
+    //subtitles -> setZValue(1); // Set subtitles to be above video
 
     graphics -> setScene(scene); // Set graphic scene
 
     player -> setAudioOutput(audio);
     player -> setVideoOutput(video);
-
-    //subtitles -> setPos(100, 100);
-    //subtitles -> setZValue(1); // Set subtitles to be above video
 
     scene -> addItem(video);
     //scene -> addItem(subtitles);
@@ -39,10 +37,31 @@ Playback::Playback(QWidget *parent)
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout -> addWidget(graphics);
+    layout -> setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 }
 
-void Playback::resizeEvent(QResizeEvent *event) // Resize event so the video has the viewport size
+/*
+    if(video -> isVisible()) {
+        graphics -> fitInView(scene -> sceneRect(), Qt::KeepAspectRatio);
+    }
+*/
+
+void Playback::mousePressEvent(QMouseEvent *event)
+{
+    if (event -> button() == Qt::LeftButton) {
+
+        if (player -> playbackState() == QMediaPlayer::PlayingState) {
+            player -> pause();
+        }
+
+        else {
+            player -> play();
+        }
+    }
+}
+
+void Playback::resizeEvent(QResizeEvent *event) // Resize event so the QGraphicsView fits into the viewport
 {
     QWidget::resizeEvent(event);
 
@@ -54,8 +73,4 @@ void Playback::mediaPlayback(QStringList &files)
     player -> setSource(QUrl::fromLocalFile(files[0]));
 
     player -> play();
-
-    QTimer::singleShot(100, this, [=]() { // Set graphics to fit the view right after the video starts playing
-        graphics -> fitInView(scene -> sceneRect(), Qt::KeepAspectRatio);
-    });
 }
