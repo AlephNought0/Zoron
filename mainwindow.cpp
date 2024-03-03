@@ -5,7 +5,7 @@
 #include <QMouseEvent>
 #include <QTimer>
 #include <QDebug>
-/*
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -24,13 +24,13 @@ MainWindow::MainWindow(QWidget *parent)
     playback = new Playback(this); // Create a playback instance
     interface = new Interface(this);
 
-    ui -> centralwidget -> layout() -> addWidget(playback);
-    ui -> centralwidget -> layout() -> addWidget(interface);
+    QVBoxLayout *l1 = new QVBoxLayout(this);
+    QVBoxLayout *l2 = new QVBoxLayout(this);
+
+    l1 -> addWidget(playback);
+    l2 -> addWidget(interface);
 
     interface -> raise();
-    interface -> show();
-
-    //setCentralWidget(playback);
 
     connect(this, &MainWindow::mediaFiles, playback, &Playback::mediaPlayback); // Send file location to the playback function
 }
@@ -64,4 +64,4 @@ void MainWindow::on_actionOpen_triggered()
     }
 
     emit mediaFiles(files);
-}*/
+}
