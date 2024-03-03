@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+/*#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include "playback.h"
@@ -39,3 +39,4 @@ private:
     Interface* interface;
 };
 #endif // MAINWINDOW_H
+*/

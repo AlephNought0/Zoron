@@ -1,13 +1,13 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
-#include <QDialog>
+#include <QWidget>
 
 namespace Ui {
 class Interface;
 }
 
-class Interface : public QDialog
+class Interface : public QWidget
 {
     Q_OBJECT
 

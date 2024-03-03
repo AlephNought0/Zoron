@@ -3,6 +3,7 @@
 #include "interface.h"
 
 #include <QFileDialog>
+#include <QVBoxLayout>
 #include <QMouseEvent>
 #include <QTimer>
 #include <QDebug>
@@ -23,7 +24,13 @@ Mainwin::Mainwin(QWidget *parent)
     playback = new Playback(this); // Create a playback instance
     interface = new Interface(this);
 
-    //setCentralWidget(playback);
+    QVBoxLayout *l1 = new QVBoxLayout(this);
+    QVBoxLayout *l2 = new QVBoxLayout(this);
+
+    l1 -> addWidget(playback);
+    l2 -> addWidget(interface);
+
+    interface -> raise();
 
     connect(this, &Mainwin::mediaFiles, playback, &Playback::mediaPlayback); // Send file location to the playback function
 }
