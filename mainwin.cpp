@@ -1,46 +1,39 @@
-#include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "mainwin.h"
+#include "ui_mainwin.h"
+#include "interface.h"
 
 #include <QFileDialog>
 #include <QMouseEvent>
 #include <QTimer>
 #include <QDebug>
-/*
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+
+Mainwin::Mainwin(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::Mainwin)
 {
-    ui -> setupUi(this);
+    ui->setupUi(this);
 
     setMouseTracking(true); // Enable mouse tracking for the widget
 
     // Set up a timer to check mouse position periodically
     timer = new QTimer(this);
-    connect(timer, &QTimer::timeout, this, &MainWindow::checkMousePosition);
+    connect(timer, &QTimer::timeout, this, &Mainwin::checkMousePosition);
     timer -> start(10);
-
-    ui -> centralwidget -> setLayout(new QVBoxLayout);
 
     playback = new Playback(this); // Create a playback instance
     interface = new Interface(this);
 
-    ui -> centralwidget -> layout() -> addWidget(playback);
-    ui -> centralwidget -> layout() -> addWidget(interface);
-
-    interface -> raise();
-    interface -> show();
-
     //setCentralWidget(playback);
 
-    connect(this, &MainWindow::mediaFiles, playback, &Playback::mediaPlayback); // Send file location to the playback function
+    connect(this, &Mainwin::mediaFiles, playback, &Playback::mediaPlayback); // Send file location to the playback function
 }
 
-MainWindow::~MainWindow()
+Mainwin::~Mainwin()
 {
     delete ui;
 }
 
-void MainWindow::checkMousePosition()
+void Mainwin::checkMousePosition()
 {
     QPoint currentPos = QCursor::pos();
 
@@ -50,7 +43,7 @@ void MainWindow::checkMousePosition()
     }
 }
 
-void MainWindow::on_actionOpen_triggered()
+void Mainwin::on_actionOpen_triggered()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::ExistingFiles);
@@ -64,4 +57,4 @@ void MainWindow::on_actionOpen_triggered()
     }
 
     emit mediaFiles(files);
-}*/
+}

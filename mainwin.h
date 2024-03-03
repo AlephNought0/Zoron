@@ -1,27 +1,24 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAINWIN_H
+#define MAINWIN_H
 
 #include "playback.h"
 #include "interface.h"
 
-#include <QMainWindow>
+#include <QWidget>
 #include <QMouseEvent>
 #include <QTimer>
 
-
-QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+class Mainwin;
 }
-QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class Mainwin : public QWidget
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit Mainwin(QWidget *parent = nullptr);
+    ~Mainwin();
 
 signals:
     void mediaFiles(QStringList &files);
@@ -31,11 +28,12 @@ private slots:
     void checkMousePosition();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::Mainwin *ui;
 
     Playback *playback;
     QPoint lastMousePos;
     QTimer* timer;
     Interface* interface;
 };
-#endif // MAINWINDOW_H
+
+#endif // MAINWIN_H

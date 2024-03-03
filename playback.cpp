@@ -10,9 +10,6 @@
 #include <QVBoxLayout>
 #include <QMouseEvent>
 
-#include <QGraphicsProxyWidget>
-
-
 Playback::Playback(QWidget *parent)
     : QWidget{parent}
 {
@@ -40,12 +37,6 @@ Playback::Playback(QWidget *parent)
     layout -> setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 }
-
-/*
-    if(video -> isVisible()) {
-        graphics -> fitInView(scene -> sceneRect(), Qt::KeepAspectRatio);
-    }
-*/
 
 void Playback::mousePressEvent(QMouseEvent *event)
 {

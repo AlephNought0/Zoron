@@ -29,7 +29,6 @@ private:
     QGraphicsScene* scene;
     QGraphicsVideoItem* video;
     QGraphicsSimpleTextItem* subtitles;
-    QVBoxLayout* layout;
 
 signals:
 
