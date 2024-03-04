@@ -42,8 +42,6 @@ void MainWindow::resizeEvent(QResizeEvent *event) // Resize event to adjust the 
 
     interface -> move(0, height() - interface -> height());
     interface -> setFixedWidth(width());
-
-    qInfo() << "Window: " << playback -> width();
 }
 
 void MainWindow::checkMousePosition()
@@ -51,7 +49,7 @@ void MainWindow::checkMousePosition()
     QPoint currentPos = QCursor::pos();
 
     if (currentPos != lastMousePos) {
-        //qInfo() << currentPos;
+        qInfo() << currentPos;
         lastMousePos = currentPos;
     }
 }

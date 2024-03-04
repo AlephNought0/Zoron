@@ -1,4 +1,5 @@
 #include "playback.h"
+#include "customgraphicsview.h"
 
 #include <QWidget>
 #include <QMediaPlayer>
@@ -7,16 +8,14 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsSimpleTextItem>
-#include <QVBoxLayout>
-#include <QMouseEvent>
 
 Playback::Playback(QWidget *parent)
     : QWidget{parent}
 {
     player = new QMediaPlayer;
     audio = new QAudioOutput;
-    graphics = new QGraphicsView(this);
-    scene = new QGraphicsScene(this);
+    graphics = new CustomGraphicsView;
+    scene = new QGraphicsScene;
     video = new QGraphicsVideoItem;
     //subtitles = new QGraphicsSimpleTextItem("Meow");
     //subtitles -> setPos(100, 100);
@@ -37,7 +36,8 @@ Playback::Playback(QWidget *parent)
     layout -> setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 
-    graphics -> setContentsMargins(0, 0, 0, 0);
+    graphics -> setViewportMargins(-2, -2, -2, -2); // QT please fix this. Explanation in customgraphicsview.h
+    graphics -> setFrameStyle(QFrame::NoFrame);
 }
 
 void Playback::mousePressEvent(QMouseEvent *event)
@@ -78,16 +78,14 @@ void Playback::resizeEvent(QResizeEvent *event) // Resize event so the QGraphics
         sceneRect.adjust(-widthDiff / 2, 0, widthDiff / 2, 0);
     }
 
-    qInfo() << "Graphics:" << graphics -> viewport() -> width();
-
-    graphics -> fitInView(scene -> sceneRect(), Qt::IgnoreAspectRatio);
+    graphics -> fitInView(scene -> sceneRect(), Qt::KeepAspectRatio);
 }
 
 void Playback::showEvent(QShowEvent* event)
 {
     if(!video)
         return;
-   graphics -> fitInView(scene -> sceneRect(), Qt::IgnoreAspectRatio);
+   graphics -> fitInView(scene -> sceneRect(), Qt::KeepAspectRatio);
 }
 
 void Playback::mediaPlayback(QStringList &files)

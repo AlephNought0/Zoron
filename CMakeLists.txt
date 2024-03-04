@@ -26,6 +26,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         playback.h playback.cpp
         interface.h interface.cpp interface.ui
         resources.qrc
+        customgraphicsview.h customgraphicsview.cpp
+
+
 
 
 

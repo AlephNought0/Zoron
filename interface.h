@@ -2,6 +2,7 @@
 #define INTERFACE_H
 
 #include <QWidget>
+#include <QGraphicsView>
 
 namespace Ui {
 class Interface;
