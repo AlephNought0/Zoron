@@ -15,8 +15,8 @@ Playback::Playback(QWidget *parent)
 {
     player = new QMediaPlayer;
     audio = new QAudioOutput;
-    graphics = new QGraphicsView;
-    scene = new QGraphicsScene;
+    graphics = new QGraphicsView(this);
+    scene = new QGraphicsScene(this);
     video = new QGraphicsVideoItem;
     //subtitles = new QGraphicsSimpleTextItem("Meow");
     //subtitles -> setPos(100, 100);
@@ -30,12 +30,14 @@ Playback::Playback(QWidget *parent)
     scene -> addItem(video);
     //scene -> addItem(subtitles);
 
-    audio -> setVolume(0.2);
+    audio -> setVolume(0.1);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout -> addWidget(graphics);
     layout -> setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
+
+    graphics -> setContentsMargins(0, 0, 0, 0);
 }
 
 void Playback::mousePressEvent(QMouseEvent *event)
@@ -56,7 +58,36 @@ void Playback::resizeEvent(QResizeEvent *event) // Resize event so the QGraphics
 {
     QWidget::resizeEvent(event);
 
-    graphics -> fitInView(scene -> sceneRect(), Qt::KeepAspectRatio);
+    QRectF sceneRect = scene -> itemsBoundingRect();
+
+    // Adjust the scene rectangle to maintain aspect ratio
+    qreal aspectRatio = sceneRect.width() / sceneRect.height();
+    qreal viewportAspectRatio = graphics -> viewport() -> width() / graphics -> viewport() -> height();
+
+    if (aspectRatio > viewportAspectRatio) {
+        // Scene is wider than viewport, adjust height
+        qreal newHeight = sceneRect.width() / viewportAspectRatio;
+        qreal heightDiff = newHeight - sceneRect.height();
+        sceneRect.adjust(0, -heightDiff / 2, 0, heightDiff / 2);
+    }
+
+    else {
+        // Scene is taller than viewport, adjust width
+        qreal newWidth = sceneRect.height() * viewportAspectRatio;
+        qreal widthDiff = newWidth - sceneRect.width();
+        sceneRect.adjust(-widthDiff / 2, 0, widthDiff / 2, 0);
+    }
+
+    qInfo() << "Graphics:" << graphics -> viewport() -> width();
+
+    graphics -> fitInView(scene -> sceneRect(), Qt::IgnoreAspectRatio);
+}
+
+void Playback::showEvent(QShowEvent* event)
+{
+    if(!video)
+        return;
+   graphics -> fitInView(scene -> sceneRect(), Qt::IgnoreAspectRatio);
 }
 
 void Playback::mediaPlayback(QStringList &files)

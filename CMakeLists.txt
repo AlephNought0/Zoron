@@ -25,6 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         playback.h playback.cpp
         interface.h interface.cpp interface.ui
+        resources.qrc
 
 
 

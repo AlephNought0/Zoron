@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/svg">
+        <file>Resources/Icons/forward.svg</file>
+        <file>Resources/Icons/backwards.svg</file>
+        <file>Resources/Icons/play.svg</file>
+    </qresource>
+</RCC>

@@ -15,8 +15,12 @@ public:
     explicit Interface(QWidget *parent = nullptr);
     ~Interface();
 
+private slots:
+
 private:
     Ui::Interface *ui;
+
+    QTimer* timer;
 };
 
 #endif // INTERFACE_H

@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QTimer>
 #include <QDebug>
+#include <QFlags>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,18 +20,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &MainWindow::checkMousePosition);
     timer -> start(10);
 
-    ui -> centralwidget -> setLayout(new QVBoxLayout);
-
-    playback = new Playback(this); // Create a playback instance
+    playback = new Playback(this);
     interface = new Interface(this);
 
-    QVBoxLayout *l1 = new QVBoxLayout(this);
-    QVBoxLayout *l2 = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout -> addWidget(interface);
 
-    l1 -> addWidget(playback);
-    l2 -> addWidget(interface);
-
-    interface -> raise();
+    setCentralWidget(playback);
 
     connect(this, &MainWindow::mediaFiles, playback, &Playback::mediaPlayback); // Send file location to the playback function
 }
@@ -40,12 +36,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::resizeEvent(QResizeEvent *event) // Resize event to adjust the interface to the bottom
+{
+    QWidget::resizeEvent(event);
+
+    interface -> move(0, height() - interface -> height());
+    interface -> setFixedWidth(width());
+
+    qInfo() << "Window: " << playback -> width();
+}
+
 void MainWindow::checkMousePosition()
 {
     QPoint currentPos = QCursor::pos();
 
     if (currentPos != lastMousePos) {
-        qInfo() << currentPos;
+        //qInfo() << currentPos;
         lastMousePos = currentPos;
     }
 }
@@ -54,7 +60,7 @@ void MainWindow::on_actionOpen_triggered()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::ExistingFiles);
-    dialog.setNameFilter(tr("Video Files (*.mp4 *.mov)"));
+    dialog.setNameFilter(tr("Video Files (*.mp4 *.mov *.mpv)"));
     dialog.setViewMode(QFileDialog::Detail);
 
     QStringList files;

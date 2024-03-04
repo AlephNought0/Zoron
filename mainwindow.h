@@ -29,6 +29,7 @@ signals:
 private slots:
     void on_actionOpen_triggered();
     void checkMousePosition();
+    void resizeEvent(QResizeEvent *event);
 
 private:
     Ui::MainWindow *ui;

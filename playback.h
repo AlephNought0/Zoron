@@ -21,6 +21,7 @@ public slots:
     void mediaPlayback(QStringList &files);
     void resizeEvent(QResizeEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void showEvent(QShowEvent* event);
 
 private:
     QMediaPlayer* player;
