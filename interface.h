@@ -1,8 +1,11 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+#include "mediaplayer.h"
+#include "customslider.h"
+
 #include <QWidget>
-#include <QGraphicsView>
+#include <QMediaPlayer>
 
 namespace Ui {
 class Interface;
@@ -16,12 +19,19 @@ public:
     explicit Interface(QWidget *parent = nullptr);
     ~Interface();
 
+public slots:
+
 private slots:
+    void on_playButton_clicked();
+    void positionText();
+    void durationText();
+    void handleSliderClicked(int position);
 
 private:
     Ui::Interface *ui;
 
     QTimer* timer;
+    QMediaPlayer* m_mediaPlayer;
 };
 
 #endif // INTERFACE_H

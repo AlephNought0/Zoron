@@ -2,10 +2,7 @@
 #include "./ui_mainwindow.h"
 
 #include <QFileDialog>
-#include <QMouseEvent>
-#include <QTimer>
 #include <QDebug>
-#include <QFlags>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,9 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     playback = new Playback(this);
     interface = new Interface(this);
-
-    QVBoxLayout *layout = new QVBoxLayout(this);
-    layout -> addWidget(interface);
 
     setCentralWidget(playback);
 
@@ -49,7 +43,7 @@ void MainWindow::checkMousePosition()
     QPoint currentPos = QCursor::pos();
 
     if (currentPos != lastMousePos) {
-        qInfo() << currentPos;
+        //qInfo() << currentPos;
         lastMousePos = currentPos;
     }
 }

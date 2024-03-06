@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>807</width>
-    <height>102</height>
+    <height>98</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -105,7 +105,7 @@ background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0.4 rgba(0,
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>270</width>
+              <width>265</width>
               <height>0</height>
              </size>
             </property>
@@ -139,7 +139,7 @@ border: 0px;
 }
 
 QPushButton::hover {
-background: rgba(66, 66, 66, 0.6);
+background: rgba(66, 66, 66, 0.8);
 }</string>
             </property>
             <property name="text">
@@ -182,7 +182,7 @@ border: 0px;
 }
 
 QPushButton::hover {
-background: rgba(66, 66, 66, 0.6);
+background: rgba(66, 66, 66, 0.8);
 }</string>
             </property>
             <property name="text">
@@ -225,7 +225,7 @@ border: 0px;
 }
 
 QPushButton::hover {
-background: rgba(66, 66, 66, 0.6);
+background: rgba(66, 66, 66, 0.8);
 }</string>
             </property>
             <property name="text">
@@ -253,7 +253,7 @@ background: rgba(66, 66, 66, 0.6);
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>270</width>
+              <width>265</width>
               <height>0</height>
              </size>
             </property>
@@ -264,7 +264,7 @@ background: rgba(66, 66, 66, 0.6);
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
-           <widget class="QLabel" name="currentDuration">
+           <widget class="QLabel" name="currentPosition">
             <property name="minimumSize">
              <size>
               <width>70</width>
@@ -283,7 +283,7 @@ background: rgba(66, 66, 66, 0.6);
            </widget>
           </item>
           <item>
-           <widget class="QSlider" name="durationSlider">
+           <widget class="CustomSlider" name="positionSlider">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
               <horstretch>0</horstretch>
@@ -293,8 +293,14 @@ background: rgba(66, 66, 66, 0.6);
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>20</height>
+              <height>0</height>
              </size>
+            </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
             </property>
             <property name="styleSheet">
              <string notr="true">QSlider {
@@ -302,41 +308,57 @@ background-color: transparent;
 }
 
 QSlider::handle {
-background-color: rgba(255, 10, 0, 0);
+background-color: transparent;
 }
 
-QSlider::groove:horizontal {
+QSlider::groove {
 border: 0.5px solid transparent;
 height: 6px;
 }
 
 QSlider::sub-page {
-background: transparent;
+background: cyan;
+margin-left: 2px;
 }
 
 QSlider::add-page {
-background: black;
+background: rgb(125, 125, 125);
 }</string>
             </property>
             <property name="minimum">
              <number>0</number>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>10000</number>
+            </property>
+            <property name="singleStep">
+             <number>0</number>
             </property>
             <property name="pageStep">
-             <number>10</number>
+             <number>0</number>
             </property>
             <property name="value">
              <number>0</number>
             </property>
+            <property name="tracking">
+             <bool>true</bool>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="invertedAppearance">
+             <bool>false</bool>
+            </property>
+            <property name="invertedControls">
+             <bool>false</bool>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::NoTicks</enum>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="maxDuration">
+           <widget class="QLabel" name="duration">
             <property name="minimumSize">
              <size>
               <width>70</width>
@@ -368,7 +390,7 @@ background: black;
         </property>
         <property name="minimumSize">
          <size>
-          <width>33</width>
+          <width>26</width>
           <height>0</height>
          </size>
         </property>
@@ -377,24 +399,80 @@ background: black;
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <property name="spacing">
-          <number>6</number>
+          <number>0</number>
          </property>
          <property name="sizeConstraint">
           <enum>QLayout::SetDefaultConstraint</enum>
          </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>4</number>
+         </property>
+         <property name="rightMargin">
+          <number>4</number>
+         </property>
+         <property name="bottomMargin">
+          <number>10</number>
+         </property>
          <item>
           <widget class="QSlider" name="audioSlider">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSlider {
+background-color: transparent;
+width: 30px;
+}
+
+QSlider::handle {
+background-color: transparent;
+}
+
+QSlider::groove {
+width: 30px;
+}
+
+QSlider::add-page {
+width: 30px;
+margin-top: -7px;
+background: rgb(125, 125, 125);
+}</string>
+           </property>
            <property name="maximum">
             <number>100</number>
            </property>
+           <property name="sliderPosition">
+            <number>0</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
+           </property>
+           <property name="invertedAppearance">
+            <bool>false</bool>
+           </property>
+           <property name="invertedControls">
+            <bool>false</bool>
+           </property>
+           <property name="tickPosition">
+            <enum>QSlider::NoTicks</enum>
            </property>
           </widget>
          </item>
@@ -406,6 +484,13 @@ background: black;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>CustomSlider</class>
+   <extends>QSlider</extends>
+   <header>../../../Zoron/customslider.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>
