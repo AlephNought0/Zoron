@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui -> setupUi(this);
 
+    check = false;
+
     setMouseTracking(true); // Enable mouse tracking for the widget
 
     // Set up a timer to check mouse position periodically
@@ -19,10 +21,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     playback = new Playback(this);
     interface = new Interface(this);
+    bridge = new Bridge(interface, playback, this);
+
+    animation = new QPropertyAnimation(interface, "geometry");
+    animation -> setDuration(50);
 
     setCentralWidget(playback);
-
-    connect(this, &MainWindow::mediaFiles, playback, &Playback::mediaPlayback); // Send file location to the playback function
 }
 
 MainWindow::~MainWindow()
@@ -34,32 +38,55 @@ void MainWindow::resizeEvent(QResizeEvent *event) // Resize event to adjust the 
 {
     QWidget::resizeEvent(event);
 
-    interface -> move(0, height() - interface -> height());
-    interface -> setFixedWidth(width());
+    interface -> setGeometry(0, height() - interface -> height(), width(), interface -> height());
 }
 
 void MainWindow::checkMousePosition()
 {
+    static QTimer hideTimer;
     QPoint currentPos = QCursor::pos();
 
-    if (currentPos != lastMousePos) {
-        //qInfo() << currentPos;
+    if(currentPos != lastMousePos && check) {
         lastMousePos = currentPos;
+
+        QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
+
+        animation -> setStartValue(QRect(0, height(), width(), interface -> height()));
+        animation -> setEndValue(QRect(0, height() - interface -> height(), width(), interface -> height()));
+        animation -> start();
+
+        check = false;
     }
+
+    else if(currentPos != lastMousePos) {
+        lastMousePos = currentPos;
+
+        hideTimer.start(2000);
+    }
+
+    connect(&hideTimer, &QTimer::timeout, interface, [this]() {
+        animation -> setStartValue(interface -> geometry());
+        animation -> setEndValue(QRect(0, height(), width(), interface -> height()));
+        animation -> start();
+
+        check = true;
+
+        QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
+    });
 }
 
 void MainWindow::on_actionOpen_triggered()
 {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::ExistingFiles);
-    dialog.setNameFilter(tr("Video Files (*.mp4 *.mov *.mpv)"));
+    dialog.setNameFilter(tr("Video Files (*.mp4 *.mov *.mpv *.mkv)"));
     dialog.setViewMode(QFileDialog::Detail);
 
-    QStringList files;
+    QStringList m_files;
 
     if(dialog.exec()) {
-        files = dialog.selectedFiles();
+        m_files = dialog.selectedFiles();
     }
 
-    emit mediaFiles(files);
+    playback -> setFiles(m_files);
 }

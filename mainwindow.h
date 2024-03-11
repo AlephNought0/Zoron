@@ -3,10 +3,12 @@
 
 #include "playback.h"
 #include "interface.h"
+#include "bridge.h"
 
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QTimer>
+#include <QPropertyAnimation>
 
 
 QT_BEGIN_NAMESPACE
@@ -24,7 +26,6 @@ public:
     ~MainWindow();
 
 signals:
-    void mediaFiles(QStringList &files);
 
 private slots:
     void on_actionOpen_triggered();
@@ -32,11 +33,14 @@ private slots:
     void resizeEvent(QResizeEvent *event);
 
 private:
-    Ui::MainWindow *ui;
+    bool check;
 
+    Ui::MainWindow *ui;
     Playback *playback;
+    Interface* interface;
+    Bridge* bridge;
     QPoint lastMousePos;
     QTimer* timer;
-    Interface* interface;
+    QPropertyAnimation* animation;
 };
 #endif // MAINWINDOW_H

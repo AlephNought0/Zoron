@@ -29,6 +29,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         customgraphicsview.h customgraphicsview.cpp
         mediaplayer.h mediaplayer.cpp
         customslider.h customslider.cpp
+        bridge.h bridge.cpp
 
     )
 # Define target properties for Android with Qt 6 as:

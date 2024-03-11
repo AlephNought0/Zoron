@@ -2,7 +2,6 @@
 #define PLAYBACK_H
 
 #include "customgraphicsview.h"
-#include "interface.h"
 #include "mediaplayer.h"
 
 #include <QWidget>
@@ -21,10 +20,10 @@ class Playback : public QWidget
 public:
     explicit Playback(QWidget *parent = nullptr);
 
-    Interface* interface;
-
 public slots:
-    void mediaPlayback(QStringList &files);
+    void next();
+    void previous();
+    void setFiles(const QStringList &files);
 
 private slots:
     void resizeEvent(QResizeEvent *event);
@@ -32,6 +31,8 @@ private slots:
     void handleVideoNativeSizeChanged();
 
 private:
+    int mediaPosition;
+
     QMediaPlayer* player;
     CustomGraphicsView* graphics;
     QGraphicsScene* scene;
@@ -39,6 +40,7 @@ private:
     QMediaPlayer* m_mediaPlayer;
     QAudioOutput* audio;
     QGraphicsVideoItem* video;
+    QStringList files;
 
 signals:
 };

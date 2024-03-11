@@ -329,7 +329,7 @@ background: rgb(125, 125, 125);
              <number>0</number>
             </property>
             <property name="maximum">
-             <number>10000</number>
+             <number>0</number>
             </property>
             <property name="singleStep">
              <number>0</number>
@@ -417,12 +417,12 @@ background: rgb(125, 125, 125);
           <number>10</number>
          </property>
          <item>
-          <widget class="QSlider" name="audioSlider">
+          <widget class="CustomSlider" name="audioSlider">
            <property name="enabled">
             <bool>true</bool>
            </property>
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -439,7 +439,7 @@ background: rgb(125, 125, 125);
            <property name="styleSheet">
             <string notr="true">QSlider {
 background-color: transparent;
-width: 30px;
+width: 8px;
 }
 
 QSlider::handle {
@@ -447,17 +447,29 @@ background-color: transparent;
 }
 
 QSlider::groove {
-width: 30px;
+margin-top: -1px;
+background: cyan;
 }
 
 QSlider::add-page {
-width: 30px;
-margin-top: -7px;
+background: transparent;
+}
+
+QSlider::sub-page {
 background: rgb(125, 125, 125);
 }</string>
            </property>
            <property name="maximum">
             <number>100</number>
+           </property>
+           <property name="singleStep">
+            <number>0</number>
+           </property>
+           <property name="pageStep">
+            <number>0</number>
+           </property>
+           <property name="value">
+            <number>0</number>
            </property>
            <property name="sliderPosition">
             <number>0</number>

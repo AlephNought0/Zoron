@@ -3,6 +3,7 @@
 
 #include "mediaplayer.h"
 #include "customslider.h"
+#include "playback.h"
 
 #include <QWidget>
 #include <QMediaPlayer>
@@ -25,13 +26,24 @@ private slots:
     void on_playButton_clicked();
     void positionText();
     void durationText();
-    void handleSliderClicked(int position);
+    void iconOnStatusChange();
+    void handleSliderClicked(float position);
+    void handleAudioClicked(float position);
+
+    void on_nextMedia_pressed();
+
+    void on_previousMedia_pressed();
 
 private:
     Ui::Interface *ui;
 
     QTimer* timer;
     QMediaPlayer* m_mediaPlayer;
+    QAudioOutput* audio;
+
+signals:
+    void nextMediaPressed();
+    void previousMediaPressed();
 };
 
 #endif // INTERFACE_H

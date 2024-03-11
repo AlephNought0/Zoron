@@ -3,7 +3,7 @@
 Playback::Playback(QWidget *parent)
     : QWidget{parent}
 {
-    interface = new Interface;
+    mediaPosition = 0;
 
     m_mediaPlayer = MediaPlayer::instance() -> mediaPlayer();
 
@@ -20,8 +20,6 @@ Playback::Playback(QWidget *parent)
 
     scene -> addItem(video);
     //scene -> addItem(subtitles);
-
-    audio -> setVolume(0.1);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout -> addWidget(graphics);
@@ -48,6 +46,30 @@ void Playback::mousePressEvent(QMouseEvent *event)
     }
 }
 
+void Playback::previous() {
+    if(mediaPosition - 1 < 0) {
+        return;
+    }
+
+    else {
+        mediaPosition--;
+        m_mediaPlayer -> setSource(QUrl::fromLocalFile(files[mediaPosition]));
+        m_mediaPlayer -> play();
+    }
+}
+
+void Playback::next() {
+    if(mediaPosition + 1 > files.size() - 1) {
+        return;
+    }
+
+    else {
+        mediaPosition++;
+        m_mediaPlayer -> setSource(QUrl::fromLocalFile(files[mediaPosition]));
+        m_mediaPlayer -> play();
+    }
+}
+
 void Playback::resizeEvent(QResizeEvent *event) // Resize event so the QGraphicsView fits into the viewport
 {
     QWidget::resizeEvent(event);
@@ -62,14 +84,17 @@ void Playback::handleVideoNativeSizeChanged()
     resizeEvent(&event);
 }
 
-void Playback::mediaPlayback(QStringList &files)
+void Playback::setFiles(const QStringList &m_files)
 {
+    files = m_files;
+
     if(files.isEmpty()) {
         return;
     }
 
     else {
-        m_mediaPlayer -> setSource(QUrl::fromLocalFile(files[0]));
+        m_mediaPlayer -> setSource(QUrl::fromLocalFile(files[mediaPosition]));
         m_mediaPlayer -> play();
+        qInfo() << files.size();
     }
 }

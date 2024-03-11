@@ -1,11 +1,8 @@
 #include "interface.h"
-#include "customslider.h"
 #include "ui_interface.h"
 
 #include <QSlider>
 #include <QTimer>
-
-using namespace std::chrono;
 
 Interface::Interface(QWidget *parent)
     : QWidget(parent)
@@ -16,10 +13,16 @@ Interface::Interface(QWidget *parent)
     setMouseTracking(true);
 
     m_mediaPlayer = MediaPlayer::instance() -> mediaPlayer();
+    audio = m_mediaPlayer -> audioOutput();
+
+    audio -> setVolume(ui -> audioSlider -> value());
+    handleAudioClicked(ui -> audioSlider -> value());
 
     connect(m_mediaPlayer, &QMediaPlayer::durationChanged, this, &Interface::durationText);
     connect(m_mediaPlayer, &QMediaPlayer::positionChanged, this, &Interface::positionText);
+    connect(m_mediaPlayer, &QMediaPlayer::playbackStateChanged, this, &Interface::iconOnStatusChange);
     connect(ui -> positionSlider, &CustomSlider::sliderClicked, this, &Interface::handleSliderClicked);
+    connect(ui -> audioSlider, &CustomSlider::sliderClicked, this, &Interface::handleAudioClicked);
 }
 
 Interface::~Interface()
@@ -27,10 +30,27 @@ Interface::~Interface()
     delete ui;
 }
 
-void Interface::handleSliderClicked(int position)
+void Interface::iconOnStatusChange() {
+    if(m_mediaPlayer -> playbackState() == QMediaPlayer::PlayingState) {
+        ui -> playButton -> setIcon(QIcon(":/svg/Resources/Icons/pause.svg"));
+    }
+
+    else {
+        ui -> playButton -> setIcon(QIcon(":/svg/Resources/Icons/play.svg"));
+    }
+}
+
+void Interface::handleAudioClicked(float position)
+{
+    audio -> setVolume(position / 100);
+    ui -> audioSlider -> setValue(position);
+}
+
+void Interface::handleSliderClicked(float position)
 {
     m_mediaPlayer -> pause();
     m_mediaPlayer -> setPosition(position);
+    ui -> positionSlider -> setValue(position);
     m_mediaPlayer -> play();
 }
 
@@ -95,3 +115,15 @@ void Interface::on_playButton_clicked()
         m_mediaPlayer -> play();
     }
 }
+
+void Interface::on_nextMedia_pressed()
+{
+    emit nextMediaPressed();
+}
+
+
+void Interface::on_previousMedia_pressed()
+{
+    emit previousMediaPressed();
+}
+
