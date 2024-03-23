@@ -84,17 +84,17 @@ void Playback::handleVideoNativeSizeChanged()
     resizeEvent(&event);
 }
 
-void Playback::setFiles(const QStringList &m_files)
+void Playback::setFiles(const QStringList &files)
 {
-    files = m_files;
+    this -> files = files;
 
     if(files.isEmpty()) {
         return;
     }
 
     else {
+        mediaPosition = 0;
         m_mediaPlayer -> setSource(QUrl::fromLocalFile(files[mediaPosition]));
         m_mediaPlayer -> play();
-        qInfo() << files.size();
     }
 }

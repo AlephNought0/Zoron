@@ -82,11 +82,11 @@ void MainWindow::on_actionOpen_triggered()
     dialog.setNameFilter(tr("Video Files (*.mp4 *.mov *.mpv *.mkv)"));
     dialog.setViewMode(QFileDialog::Detail);
 
-    QStringList m_files;
+    QStringList files;
 
     if(dialog.exec()) {
-        m_files = dialog.selectedFiles();
+        files = dialog.selectedFiles();
     }
 
-    playback -> setFiles(m_files);
+    playback -> setFiles(files);
 }
